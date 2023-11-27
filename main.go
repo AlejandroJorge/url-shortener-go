@@ -16,6 +16,8 @@ func main() {
 
 	db := config.NewDatabaseConnection()
 
+	util.PanicIfError(util.RunMigration(db))
+
 	URLRepository := repository.NewURLRepository(db)
 	URLService := service.NewURLService(URLRepository)
 	URLController := controller.NewURLController(URLService)
@@ -26,6 +28,5 @@ func main() {
 	router.HandleFunc("/urls", URLController.HandleShortenURL).Methods("POST")
 	router.PathPrefix("/").HandlerFunc(URLController.HandleRedirectURL).Methods("GET")
 
-	err := http.ListenAndServe("localhost:3000", router)
-	util.PanicIfError(err)
+	util.PanicIfError(http.ListenAndServe("localhost:3000", router))
 }

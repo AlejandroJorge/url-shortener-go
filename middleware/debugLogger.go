@@ -10,7 +10,7 @@ func DebugLoggingMiddleware(next http.Handler) http.Handler {
 
 		fmt.Println("Request accepted:")
 
-		fmt.Println("Route:", r.URL.RawPath)
+		fmt.Println("Route:", r.URL.Path)
 		fmt.Println("Method:", r.Method)
 		fmt.Println("Address:", r.RemoteAddr)
 

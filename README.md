@@ -11,5 +11,3 @@ Primarily to learn a little about
 ## To do
 
 - [ ] Use environment variables
-- [ ] Proper error handling
-- [ ] Update visit count on each redirection
