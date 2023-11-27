@@ -1,1 +1,5 @@
+# Sqlite3 database
 data.db
+
+# Script for running with environment variables
+run.sh

@@ -1,5 +1,17 @@
 package config
 
-const Domain string = "localhost"
+import (
+	"fmt"
+	"os"
+	"strconv"
 
-const Port uint = 3000
+	"github.com/AlejandroJorge/url-shortener-go/util"
+)
+
+func GetPortString() string {
+	portString := os.Getenv("PORT")
+	port, err := strconv.Atoi(portString)
+	util.PanicIfError(err)
+
+	return fmt.Sprintf(":%d", port)
+}

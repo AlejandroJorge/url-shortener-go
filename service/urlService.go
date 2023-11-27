@@ -3,13 +3,11 @@ package service
 import (
 	"fmt"
 
-	"github.com/AlejandroJorge/url-shortener-go/config"
 	"github.com/AlejandroJorge/url-shortener-go/customerror"
 	"github.com/AlejandroJorge/url-shortener-go/data"
 	"github.com/AlejandroJorge/url-shortener-go/logic"
 	"github.com/AlejandroJorge/url-shortener-go/model"
 	"github.com/AlejandroJorge/url-shortener-go/repository"
-	"github.com/AlejandroJorge/url-shortener-go/util"
 )
 
 type URLService struct {
@@ -35,7 +33,7 @@ func (service URLService) ShortenURL(req data.ShortenURLRequest) (data.ShortenUR
 
 	if shortenedExists {
 		return data.ShortenURLResponse{
-			ShortenedURL: util.ConstructURL(config.Domain, config.Port, shortenedPath),
+			ShortenedURL: shortenedPath,
 		}, nil
 	}
 
@@ -56,7 +54,7 @@ func (service URLService) ShortenURL(req data.ShortenURLRequest) (data.ShortenUR
 	}
 
 	return data.ShortenURLResponse{
-		ShortenedURL: util.ConstructURL(config.Domain, config.Port, shortenedPath),
+		ShortenedURL: shortenedPath,
 	}, nil
 
 }

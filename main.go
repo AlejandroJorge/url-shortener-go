@@ -28,5 +28,5 @@ func main() {
 	router.HandleFunc("/urls", URLController.HandleShortenURL).Methods("POST")
 	router.PathPrefix("/").HandlerFunc(URLController.HandleRedirectURL).Methods("GET")
 
-	util.PanicIfError(http.ListenAndServe("localhost:3000", router))
+	util.PanicIfError(http.ListenAndServe(config.GetPortString(), router))
 }

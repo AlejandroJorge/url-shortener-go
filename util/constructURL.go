@@ -2,6 +2,6 @@ package util
 
 import "fmt"
 
-func ConstructURL(domain string, port uint, route string) string {
-	return fmt.Sprintf("%s:%d/%s", domain, port, route)
+func ConstructURL(domainWithPort string, route string) string {
+	return fmt.Sprintf("%s/%s", domainWithPort, route)
 }

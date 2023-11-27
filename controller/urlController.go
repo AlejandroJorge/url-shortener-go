@@ -23,6 +23,7 @@ func (controller URLController) HandleShortenURL(w http.ResponseWriter, r *http.
 	util.ReadRequestBody(r, &shortenURLReq)
 
 	shortenURLRes, err := controller.urlService.ShortenURL(shortenURLReq)
+	shortenURLRes.ShortenedURL = util.ConstructURL(r.Host, shortenURLRes.ShortenedURL)
 
 	var webResponse data.WebResponse
 
