@@ -1,14 +1,12 @@
 import { useReducer, useRef, useState } from "react";
 
-const API_URL = import.meta.env.API_URL
-
 export default function App(){
   const [requestState, setRequestState] = useState("idle")
   const [returnedURL, setReturnedURL] = useState("")
   const originalURL = useRef(null)
   
   async function makeRequest(){
-    fetch(`${API_URL}`,createRequest())
+    fetch(`${import.meta.env.API_URL}`,createRequest())
       .then(response => response.json())
       .then(data => {
         setReturnedURL(data.data.shortenedURL)
