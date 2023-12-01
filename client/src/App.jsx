@@ -8,7 +8,7 @@ export default function App(){
   const originalURL = useRef(null)
   
   async function makeRequest(){
-    fetch(`${API_URL}/urls`,createRequest())
+    fetch(`${API_URL}urls`,createRequest())
       .then(response => response.json())
       .then(data => {
         setReturnedURL(data.data.shortenedURL)
