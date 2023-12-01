@@ -1,6 +1,6 @@
 import { useReducer, useRef, useState } from "react";
 
-const API_URL = "https://url-shortener-go-api.up.railway.app"
+const API_URL = import.meta.env.API_URL
 
 export default function App(){
   const [requestState, setRequestState] = useState("idle")
