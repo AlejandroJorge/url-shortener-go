@@ -6,7 +6,7 @@ export default function App(){
   const originalURL = useRef(null)
   
   async function makeRequest(){
-    fetch(`${import.meta.env.API_URL}`,createRequest())
+    fetch(`${import.meta.env.VITE_API_URL}`,createRequest())
       .then(response => response.json())
       .then(data => {
         setReturnedURL(data.data.shortenedURL)

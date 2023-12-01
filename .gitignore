@@ -3,3 +3,9 @@ data.db
 
 # Script for running with environment variables
 run.sh
+
+# Node modules
+node_modules/
+
+# Environment Variables
+.env
