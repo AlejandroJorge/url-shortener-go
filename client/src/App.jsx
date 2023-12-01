@@ -6,12 +6,12 @@ export default function App(){
   const originalURL = useRef(null)
   
   async function makeRequest(){
+    console.log("making request to server", createRequest(), import.meta.env.VITE_API_URL)
     fetch(`${import.meta.env.VITE_API_URL}`,createRequest())
       .then(response => response.json())
       .then(data => {
-        setReturnedURL(data.data.shortenedURL)
+        setReturnedURL(data.shortenedURL)
         setRequestState("success")
-        console.log(data)
       })
       .catch(error => {
         setRequestState("error")

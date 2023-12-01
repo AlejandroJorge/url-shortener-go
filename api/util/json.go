@@ -18,8 +18,8 @@ func WriteResponseHeaders(w http.ResponseWriter, response data.WebResponse) {
 	w.Header().Set("Status", response.Status)
 }
 
-func WriteResponseBody(w http.ResponseWriter, response interface{}) {
+func WriteResponseBody(w http.ResponseWriter, response data.WebResponse) {
 	encoder := json.NewEncoder(w)
-	err := encoder.Encode(response)
+	err := encoder.Encode(response.Data)
 	PanicIfError(err)
 }
