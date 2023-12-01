@@ -1,14 +1,13 @@
 package config
 
 import (
-	"database/sql"
-
 	"github.com/AlejandroJorge/url-shortener-go/util"
-	_ "github.com/mattn/go-sqlite3"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
-func NewDatabaseConnection() *sql.DB {
-	db, err := sql.Open("sqlite3", "data.db")
+func NewDatabaseConnection() *gorm.DB {
+	db, err := gorm.Open(sqlite.Open("data.db"), &gorm.Config{})
 	util.PanicIfError(err)
 
 	return db

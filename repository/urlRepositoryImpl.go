@@ -1,27 +1,25 @@
 package repository
 
 import (
-	"database/sql"
+	"errors"
 
 	"github.com/AlejandroJorge/url-shortener-go/customerror"
 	"github.com/AlejandroJorge/url-shortener-go/model"
-	"github.com/mattn/go-sqlite3"
+	"gorm.io/gorm"
 )
 
 type URLRepositoryImpl struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewURLRepository(db *sql.DB) URLRepository {
-	return URLRepositoryImpl{db}
+func NewURLRepository(db *gorm.DB) URLRepository {
+	return URLRepositoryImpl{db: db}
 }
 
 func (repository URLRepositoryImpl) Save(register model.URL) error {
-	insertSQL := "INSERT INTO URL (ORIGINAL_URL, PROPIETARY_ROUTE, VISITS) VALUES (?,?,?)"
-	_, err := repository.db.Exec(insertSQL, register.OriginalURL, register.PropietaryRoute, register.Visits)
+	err := repository.db.Create(&register).Error
 	if err != nil {
-		sqliteErr, ok := err.(sqlite3.Error)
-		if ok && sqliteErr.Code == sqlite3.ErrConstraint {
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
 			err = customerror.ErrShortenedRouteAlreadyExists
 		}
 		return err
@@ -31,44 +29,42 @@ func (repository URLRepositoryImpl) Save(register model.URL) error {
 }
 
 func (repository URLRepositoryImpl) GetOriginalURL(shortenedPath string) (string, error) {
-	querySQL := "SELECT ORIGINAL_URL FROM URL WHERE PROPIETARY_ROUTE = (?)"
-	row := repository.db.QueryRow(querySQL, shortenedPath)
-
-	var originalURL string
-	err := row.Scan(&originalURL)
+	var storedURL model.URL
+	err := repository.db.Where("PROPIETARY_ROUTE = ?", shortenedPath).First(&storedURL).Error
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = customerror.ErrNoShortenedRouteRegistered
 		}
-
-		return originalURL, err
+		return "", err
 	}
-
-	return originalURL, nil
+	return storedURL.OriginalURL, nil
 }
 
 func (repository URLRepositoryImpl) GetPreviousStoredShortenedURL(originalURL string) (bool, string, error) {
-	querySQL := "SELECT PROPIETARY_ROUTE FROM URL WHERE ORIGINAL_URL = ?"
-	row := repository.db.QueryRow(querySQL, originalURL)
-
-	var existingShortenedRoute string
-	err := row.Scan(&existingShortenedRoute)
-	switch err {
-	case sql.ErrNoRows:
-		return false, existingShortenedRoute, nil
-	case nil:
-	default:
-		return false, existingShortenedRoute, err
+	var storedURL model.URL
+	err := repository.db.Where("ORIGINAL_URL = ?", originalURL).Take(&storedURL).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = customerror.ErrNoShortenedRouteRegistered
+		}
+		return false, "", nil
 	}
 
-	return true, existingShortenedRoute, nil
+	return true, storedURL.PropietaryRoute, nil
 }
 
 func (repository URLRepositoryImpl) UpdateRedirectionsCount(originalURL string) error {
-	updateSQL := "UPDATE URL SET VISITS = VISITS + 1 WHERE ORIGINAL_URL = ?"
-	_, err := repository.db.Exec(updateSQL, originalURL)
+	var storedURL model.URL
+	err := repository.db.Where("ORIGINAL_URL = ?", originalURL).First(&storedURL).Error
 	if err != nil {
 		return err
 	}
+
+	storedURL.Visits++
+	err = repository.db.Save(&storedURL).Error
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
