@@ -10,7 +10,6 @@ import (
 	"github.com/AlejandroJorge/url-shortener-go/repository"
 	"github.com/AlejandroJorge/url-shortener-go/service"
 	"github.com/AlejandroJorge/url-shortener-go/util"
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -26,12 +25,7 @@ func main() {
 
 	router := mux.NewRouter()
 
-	corsHandler := handlers.CORS(
-		handlers.AllowedHeaders([]string{"Content-Type", "Accept", "Authorization"}),
-		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"}),
-		handlers.AllowedOrigins([]string{"*"}), // Adjust this based on your requirements
-	)
-	router.Use(corsHandler)
+	router.Use(middleware.CORSMiddleware)
 	router.Use(middleware.DebugLoggingMiddleware)
 
 	router.HandleFunc("/urls", URLController.HandleShortenURL).Methods("POST")
