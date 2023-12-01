@@ -29,10 +29,6 @@ func main() {
 	router.Use(middleware.DebugLoggingMiddleware)
 
 	router.PathPrefix("/").Methods("OPTIONS").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-	})
-	router.PathPrefix("/urls").Methods("OPTIONS").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
 	})
 	router.HandleFunc("/urls", URLController.HandleShortenURL).Methods("POST")
 	router.PathPrefix("/").HandlerFunc(URLController.HandleRedirectURL).Methods("GET")
