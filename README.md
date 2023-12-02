@@ -8,6 +8,17 @@ The API is hosted [here](git@github.com:AlejandroJorge/url-shortener-go.git)
 
 The client for interacting with the API is hosted [here](https://trim.up.railway.app/)
 
+# Contents
+
+1. [How to run the app](#how-to-run-the-app)<br>
+   1.1. [Running the API](##running-the-api)<br>
+   1.2. [Running the client](#running-the-client)
+2. [Endpoints](#endpoints)<br>
+   2.1 [POST /urls](#post-urls)<br>
+   2.2 [GET /:shortened-path](#get-shortenedpath)
+3. [Implementation details](#implementation-details)
+4. [Why I built this project](#why-i-built-this-project)
+
 # How to run the app
 
 ## Running the API
@@ -91,8 +102,6 @@ It will respond with the following response:
 This endpoint compares the shortenedPath accesed and, if it is mapped in the app, redirects to its original URL
 
 # Implementation details
-
-## Technologies used
 
 - SQLite3 is used for database since it's a very small app
 - GORM is used as an ORM for interacting with the database
