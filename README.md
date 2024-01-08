@@ -4,9 +4,9 @@ A simple URL Shortener App built in Go.
 
 It's an API that can receive urls and return shortened ones which are then mapped to the originals for redirection.
 
-The API is hosted [here](git@github.com:AlejandroJorge/url-shortener-go.git)
+The API is hosted [here](trim.up.railway.app)
 
-The client for interacting with the API is hosted [here](https://trim.up.railway.app/)
+The client for interacting with the API is hosted [here](trim-url.up.railway.app)
 
 # Contents
 
